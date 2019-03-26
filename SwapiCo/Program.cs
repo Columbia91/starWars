@@ -18,10 +18,12 @@ namespace SwapiCo
         {
             Console.Write("Введите идентификатор персонажа из саги \"Звездные войны\": ");
             string identifier = Console.ReadLine();
-            string path = $"https://swapi.co/api/people/" + identifier;
+            string path = $"https://swapi.co/api/people/" + identifier + "/";
 
             List<StarWarsCharacters> characters = new List<StarWarsCharacters>();
             NetDataContractSerializer formatter = new NetDataContractSerializer();
+            string information = "Информация о таком персонаже в нашей базе отсутствует, " +
+                    "выполняем запрос на сайт \"Swapi.co\"...";
 
             try
             {
@@ -38,34 +40,36 @@ namespace SwapiCo
                         }
                     }
                 }
+                Console.WriteLine(information);
             }
             catch (Exception)
             {
-                Console.WriteLine("Информация о таком персонаже в нашей базе отсутствует, " +
-                    "выполняем запрос на сайт \"Swapi.co\"...");
+                Console.WriteLine(information);
             }
 
-            var personage = RequestForSwapiCo(path);
-            personage.Show();
-
-            characters.Add(personage);
-            using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
+            try
             {
-                formatter.Serialize(fs, characters);
-            }
-            //var file = new FileInfo("file.xml");
-        }
-        static StarWarsCharacters RequestForSwapiCo(string path)
-        {
-            string json;
+                string json;
 
-            using (WebClient client = new WebClient())
+                using (WebClient client = new WebClient())
+                {
+                    json = client.DownloadString(path);
+                }
+
+                var personage = JsonConvert.DeserializeObject<StarWarsCharacters>(json);
+                personage.Show();
+
+                characters.Add(personage);
+                using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, characters);
+                }
+            }
+            catch (Exception)
             {
-                json = client.DownloadString(path);
-            }
-
-            var personage = JsonConvert.DeserializeObject<StarWarsCharacters>(json);
-            return personage;
+                Console.WriteLine("\nК сожалению, персонаж с таким идентификатором отсутствует.");
+                Environment.Exit(0);
+            }   
         }
     }
 }

@@ -58,9 +58,11 @@ namespace SwapiCo
         [JsonProperty("url")]
         public string Url { get; set; }
 
+        public StarWarsCharacters() {}
+
         public void Show()
         {
-            Console.WriteLine("name: " + Name +
+            Console.WriteLine("\nname: " + Name +
                 "\nheight: " + Height +
                 "\nmass: " + Mass +
                 "\nhair_color: " + Hair_color +
