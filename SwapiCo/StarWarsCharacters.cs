@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace SwapiCo
 {
@@ -38,16 +39,16 @@ namespace SwapiCo
         public string Homeworld { get; set; }
 
         [JsonProperty("films")]
-        public IList<string> Films { get; set; }
+        public List<string> Films { get; set; }
 
         [JsonProperty("species")]
-        public IList<string> Species { get; set; }
+        public List<string> Species { get; set; }
 
         [JsonProperty("vehicles")]
-        public IList<string> Vehicles { get; set; }
+        public List<string> Vehicles { get; set; }
 
         [JsonProperty("starships")]
-        public IList<string> Starships { get; set; }
+        public List<string> Starships { get; set; }
 
         [JsonProperty("created")]
         public DateTime Created { get; set; }
@@ -59,25 +60,37 @@ namespace SwapiCo
         public string Url { get; set; }
 
         public StarWarsCharacters() {}
-
+        
         public void Show()
         {
-            Console.WriteLine("\nname: " + Name +
-                "\nheight: " + Height +
-                "\nmass: " + Mass +
-                "\nhair_color: " + Hair_color +
-                "\nskin_color: " + Skin_color +
-                "\neye_color: " + Eye_color +
-                "\nbirth_year: " + Birth_year +
-                "\ngender: " + Gender +
-                "\nhomeworld: " + Homeworld+
-                "\nfilms: " + Films +
-                "\nspecies: " + Species+
-                "\nvehicles: " + Vehicles+
-                "\nstarships: " + Starships +
-                "\ncreated: " + Created+
-                "\nedited: " + Edited+
-                "\nurl: " + Url + "\n\n");
+            Console.WriteLine("\nname:\t\t" + Name +
+                "\nheight:\t\t" + Height +
+                "\nmass:\t\t" + Mass +
+                "\nhair_color:\t" + Hair_color +
+                "\nskin_color:\t" + Skin_color +
+                "\neye_color:\t" + Eye_color +
+                "\nbirth_year:\t" + Birth_year +
+                "\ngender:\t\t" + Gender +
+                "\nhomeworld:\t" + Homeworld);
+            foreach (var film in Films)
+            {
+                Console.WriteLine("films:\t\t" + film);
+            }
+            foreach (var view in Species)
+            {
+                Console.WriteLine("species:\t" + view);
+            }
+            foreach (var vechile in Vehicles)
+            {
+                Console.WriteLine("vechiles:\t" + vechile);
+            }
+            foreach (var starship in Starships)
+            {
+                Console.WriteLine("starships:\t" + starship);
+            }
+            Console.WriteLine("created:\t" + Created +
+                "\nedited:\t\t" + Edited +
+                "\nurl:\t\t" + Url + "\n\n");
         }
     }
 }

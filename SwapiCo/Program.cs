@@ -16,60 +16,75 @@ namespace SwapiCo
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите идентификатор персонажа из саги \"Звездные войны\": ");
-            string identifier = Console.ReadLine();
-            string path = $"https://swapi.co/api/people/" + identifier + "/";
-
-            List<StarWarsCharacters> characters = new List<StarWarsCharacters>();
-            NetDataContractSerializer formatter = new NetDataContractSerializer();
-            string information = "Информация о таком персонаже в нашей базе отсутствует, " +
-                    "выполняем запрос на сайт \"Swapi.co\"...";
-
-            try
+            while (true)
             {
-                using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
-                {
-                    characters = (List<StarWarsCharacters>)formatter.Deserialize(fs);
+                Console.Clear();
+                Console.Write("Введите идентификатор персонажа из саги \"Звездные войны\": ");
+                string identifier = Console.ReadLine();
+                string path = $"https://swapi.co/api/people/" + identifier + "/";
 
-                    foreach (var person in characters)
+                List<StarWarsCharacters> characters = new List<StarWarsCharacters>();
+
+                XmlSerializer formatter = new XmlSerializer(typeof(List<StarWarsCharacters>));
+
+                bool check = false;
+                string information = "Информация о таком персонаже в нашей базе отсутствует, " +
+                        "выполняем запрос на сайт \"Swapi.co\"...";
+
+                try
+                {
+                    using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
                     {
-                        if (person.Url == path)
+                        characters = (List<StarWarsCharacters>)formatter.Deserialize(fs);
+
+                        foreach (var person in characters)
                         {
-                            person.Show();
-                            Environment.Exit(0);
+                            if (person.Url == path)
+                            {
+                                person.Show();
+                                check = true;
+                                Console.Write("Нажмите Enter чтобы продолжить...");
+                                Console.ReadLine(); break;
+                            }
                         }
                     }
+                    Console.WriteLine(information);
                 }
-                Console.WriteLine(information);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(information);
-            }
-
-            try
-            {
-                string json;
-
-                using (WebClient client = new WebClient())
+                catch (Exception)
                 {
-                    json = client.DownloadString(path);
+                    Console.WriteLine(information);
                 }
 
-                var personage = JsonConvert.DeserializeObject<StarWarsCharacters>(json);
-                personage.Show();
-
-                characters.Add(personage);
-                using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
+                if (!check)
                 {
-                    formatter.Serialize(fs, characters);
+                    try
+                    {
+                        string json;
+
+                        using (WebClient client = new WebClient())
+                        {
+                            json = client.DownloadString(path);
+                        }
+
+                        var personage = JsonConvert.DeserializeObject<StarWarsCharacters>(json);
+                        personage.Show();
+
+                        characters.Add(personage);
+                        using (FileStream fs = new FileStream("file.xml", FileMode.OpenOrCreate))
+                        {
+                            formatter.Serialize(fs, characters);
+                        }
+                        Console.Write("Нажмите Enter чтобы продолжить...");
+                        Console.ReadLine();
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("\nК сожалению, персонаж с таким идентификатором отсутствует.");
+                        Console.Write("Нажмите Enter чтобы продолжить...");
+                        Console.ReadLine();
+                    }
                 }
             }
-            catch (Exception)
-            {
-                Console.WriteLine("\nК сожалению, персонаж с таким идентификатором отсутствует.");
-                Environment.Exit(0);
-            }   
         }
     }
 }
