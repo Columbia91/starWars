@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace SwapiCo
 {
     [Serializable]
-    class StarWarsCharacters
+    public class StarWarsCharacters
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -61,23 +61,21 @@ namespace SwapiCo
         public void Show()
         {
             Console.WriteLine("name: " + Name +
-                "\nheight: " + Species +
-                "\nmass: " + Gender +
-                "\nhair_color: " + House +
-                "\nskin_color: " + DateOfBirth +
-                "\neye_color: " + YearOfBirth +
-                "\nbirth_year: " + Ancestry +
-                "\ngender: " + EyeColour +
-                "\nHairColour: " + HairColour +
-                "\nWood: " + Wand.Wood +
-                "\nCore: " + Wand.Core +
-                "\nLength: " + Wand.Length +
-                "\nPatronus: " + Patronus +
-                "\nHogwartsStudent: " + HogwartsStudent +
-                "\nHogwartsStaff: " + HogwartsStaff +
-                "\nActor: " + Actor +
-                "\nAlive: " + Alive +
-                "\nImage: " + Image + "\n\n");
+                "\nheight: " + Height +
+                "\nmass: " + Mass +
+                "\nhair_color: " + Hair_color +
+                "\nskin_color: " + Skin_color +
+                "\neye_color: " + Eye_color +
+                "\nbirth_year: " + Birth_year +
+                "\ngender: " + Gender +
+                "\nhomeworld: " + Homeworld+
+                "\nfilms: " + Films +
+                "\nspecies: " + Species+
+                "\nvehicles: " + Vehicles+
+                "\nstarships: " + Starships +
+                "\ncreated: " + Created+
+                "\nedited: " + Edited+
+                "\nurl: " + Url + "\n\n");
         }
     }
 }
