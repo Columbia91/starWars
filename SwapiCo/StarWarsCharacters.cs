@@ -60,7 +60,8 @@ namespace SwapiCo
         public string Url { get; set; }
 
         public StarWarsCharacters() {}
-        
+
+        #region Вывод на консоль
         public void Show()
         {
             Console.WriteLine("\nname:\t\t" + Name +
@@ -92,5 +93,6 @@ namespace SwapiCo
                 "\nedited:\t\t" + Edited +
                 "\nurl:\t\t" + Url + "\n\n");
         }
+        #endregion
     }
 }
